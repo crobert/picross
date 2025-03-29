@@ -1,6 +1,7 @@
 import express, { type Request, type Response } from 'express';
 import cors from 'cors';
 import path from 'path';
+import { query } from './db';
 
 class Server {
   app: any;
@@ -25,6 +26,15 @@ class Server {
   routes() {
     this.app.get('/api', (_req: Request, res: Response) => {
       res.status(200).json({ data: 'Api is running' });
+    });
+
+    this.app.get('/api/puzzles', async (_req: Request, res: Response) => {
+      try {
+        const result = await query('SELECT id, name, cols, rows FROM puzzles');
+        res.json(result.rows);
+      } catch (err) {
+        res.status(500).send('Internal Server Error');
+      }
     });
 
     // Catch all requests that don't match any route

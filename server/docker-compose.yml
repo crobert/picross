@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: picross_pg
+    environment:
+      - POSTGRES_USER=picross
+      - POSTGRES_PASSWORD=picross
+      - POSTGRES_DB=picross
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d:delegated
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5434:5432
+    restart: on-failure
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - '8888:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@picross.com
+      PGADMIN_DEFAULT_PASSWORD: picross
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  postgres-data:
+  pgadmin-data:
+
+networks:
+  default:
+    name: picross
+
+name: picross
