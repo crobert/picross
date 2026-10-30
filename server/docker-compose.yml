@@ -10,7 +10,7 @@ services:
       - ./db:/docker-entrypoint-initdb.d:delegated
       - postgres-data:/var/lib/postgresql/data
     ports:
-      - 5434:5432
+      - 5435:5432
     restart: on-failure
   pgadmin:
     image: dpage/pgadmin4
