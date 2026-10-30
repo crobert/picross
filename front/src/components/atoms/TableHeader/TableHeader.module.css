@@ -1,0 +1,30 @@
+.TableHeader {
+  height: 40px;
+  min-width: 40px;
+  border: 1px solid black;
+  gap: 5px 0;
+  text-align: right;
+  padding-right: 5px;
+}
+
+.TableHeader--col {
+  height: unset;
+  min-height: 40px;
+  width: 40px;
+  flex-direction: column;
+  vertical-align: bottom;
+  padding: 5px 0;
+}
+
+.TableHeader-value {
+  height: 20px;
+  min-width: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.TableHeader--col .TableHeader-value {
+  width: 100%;
+  display: flex;
+}
