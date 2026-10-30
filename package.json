@@ -3,5 +3,8 @@
     "front",
     "server"
   ],
-  "private": true
+  "private": true,
+  "engines": {
+    "node": ">=26"
+  }
 }
