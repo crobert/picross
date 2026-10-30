@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { withTable } from '../../../../.storybook/decorators';
 import TableHeader from './index';
 
 const meta = {
   title: 'Atoms/TableHeader',
   component: TableHeader,
+  decorators: [withTable],
 } satisfies Meta<typeof TableHeader>;
 
 export default meta;
