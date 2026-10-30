@@ -38,7 +38,7 @@ class Server {
     });
 
     // Catch all requests that don't match any route
-    this.app.get('*', (_req: Request, res: Response) => {
+    this.app.get('/{*splat}', (_req: Request, res: Response) => {
       res.sendFile(path.join(__dirname, '../../front/dist/index.html'));
     });
   }
