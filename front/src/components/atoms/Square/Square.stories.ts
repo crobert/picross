@@ -14,7 +14,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    onClick: fn(),
+    onPointerDown: fn(),
+    onPointerEnter: fn(),
   },
 };
 

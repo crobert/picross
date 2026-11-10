@@ -5,8 +5,14 @@
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
+  user-select: none;
 }
 
 .Square--checked {
   background-color: black;
+}
+
+.Square:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: -3px;
 }

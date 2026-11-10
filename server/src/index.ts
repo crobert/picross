@@ -30,7 +30,7 @@ class Server {
 
     this.app.get('/api/puzzles', async (_req: Request, res: Response) => {
       try {
-        const result = await query('SELECT id, name, cols, rows FROM puzzles');
+        const result = await query('SELECT id, name, cols, rows FROM puzzles ORDER BY id');
         res.json(result.rows);
       } catch (err) {
         res.status(500).send('Internal Server Error');
