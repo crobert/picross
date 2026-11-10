@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Pool, type QueryResultRow } from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config({ quiet: true });
@@ -11,6 +11,9 @@ const pool = new Pool({
   database: process.env.DB_NAME,
 });
 
-export const query = async (text: any, params?: any) => {
-  return pool.query(text, params);
+export const query = async <T extends QueryResultRow = QueryResultRow>(
+  text: string,
+  params?: unknown[],
+) => {
+  return pool.query<T>(text, params);
 };

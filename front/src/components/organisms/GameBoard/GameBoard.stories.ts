@@ -29,8 +29,8 @@ export const Large: Story = {
 
 export const MultipleClues: Story = {
   args: {
-    rows: [[2, 1], [1, 2], [1], [1, 2], [2, 1]],
-    cols: [[1, 2], [2, 1], [2], [1, 1], [2, 1]],
+    rows: [[2, 1], [1, 2], [1, 1], [1, 2], [2, 1]],
+    cols: [[1, 3], [2, 1], [2], [1, 1], [2, 1]],
   },
 };
 
