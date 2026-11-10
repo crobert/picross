@@ -1,0 +1,19 @@
+.Session {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.Session-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.Session-logout {
+  padding: 4px 12px;
+  border: 1px solid black;
+  background-color: white;
+  cursor: pointer;
+}

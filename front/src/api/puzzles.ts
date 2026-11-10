@@ -15,13 +15,14 @@ export const fetchPuzzles = async (signal?: AbortSignal): Promise<Puzzle[]> => {
 
 export const validateGrid = async (
   puzzleId: number,
+  userId: number,
   grid: number[][],
   signal?: AbortSignal,
 ): Promise<boolean> => {
   const response = await fetch(`/api/puzzles/${puzzleId}/validate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ grid }),
+    body: JSON.stringify({ userId, grid }),
     signal,
   });
   if (!response.ok) {

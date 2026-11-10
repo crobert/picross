@@ -8,6 +8,7 @@ import {
   type ValidationResult,
 } from './App.utils';
 import GameBoard from './components/organisms/GameBoard';
+import { useUser } from './UserContext';
 import type { Grid } from './components/organisms/GameBoard/GameBoard.types';
 import { createGrid } from './components/organisms/GameBoard/GameBoard.utils';
 import styles from './App.module.css';
@@ -15,6 +16,7 @@ import styles from './App.module.css';
 const cx = classnames.bind(styles);
 
 function App() {
+  const user = useUser();
   const [puzzles, setPuzzles] = useState<Puzzle[] | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [failed, setFailed] = useState(false);
@@ -68,6 +70,7 @@ function App() {
     try {
       const valid = await validateGrid(
         puzzle.id,
+        user.id,
         toBinaryGrid(current),
         controller.signal,
       );
