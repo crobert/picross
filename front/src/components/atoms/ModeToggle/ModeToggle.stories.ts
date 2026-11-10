@@ -23,3 +23,10 @@ export const Empty: Story = {
     mode: 'empty',
   },
 };
+
+export const Disabled: Story = {
+  args: {
+    ...Default.args,
+    isDisabled: true,
+  },
+};

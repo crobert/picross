@@ -12,3 +12,23 @@ export const fetchPuzzles = async (signal?: AbortSignal): Promise<Puzzle[]> => {
   }
   return response.json();
 };
+
+export const validateGrid = async (
+  puzzleId: number,
+  grid: number[][],
+  signal?: AbortSignal,
+): Promise<boolean> => {
+  const response = await fetch(`/api/puzzles/${puzzleId}/validate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ grid }),
+    signal,
+  });
+  if (!response.ok) {
+    throw new Error(
+      `POST /api/puzzles/${puzzleId}/validate failed with status ${response.status}`,
+    );
+  }
+  const { valid } = await response.json();
+  return valid === true;
+};

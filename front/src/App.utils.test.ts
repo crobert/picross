@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatPuzzleLabel } from './App.utils';
+import { formatPuzzleLabel, toBinaryGrid } from './App.utils';
 
 describe('formatPuzzleLabel', () => {
   it('shows the id, the name and the cols x rows size', () => {
@@ -22,5 +22,19 @@ describe('formatPuzzleLabel', () => {
         rows: [[3]],
       }),
     ).toBe('#1 wide (3×1)');
+  });
+});
+
+describe('toBinaryGrid', () => {
+  it('sends checked squares as 1 and every other state as 0', () => {
+    expect(
+      toBinaryGrid([
+        ['checked', 'empty', 'unknown'],
+        ['unknown', 'checked', 'checked'],
+      ]),
+    ).toEqual([
+      [1, 0, 0],
+      [0, 1, 1],
+    ]);
   });
 });

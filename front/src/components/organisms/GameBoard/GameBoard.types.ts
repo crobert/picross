@@ -12,5 +12,6 @@ export type Position = {
 export type GameBoardProps = {
   rows: number[][];
   cols: number[][];
+  isLocked?: boolean;
   onChange?: (grid: Grid) => void;
 };

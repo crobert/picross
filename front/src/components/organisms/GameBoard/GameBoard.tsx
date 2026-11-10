@@ -24,7 +24,7 @@ import type { SquareState } from '../../atoms/Square/Square.types';
 
 const cx = classnames.bind(styles);
 
-const GameBoard = ({ rows, cols, onChange }: GameBoardProps) => {
+const GameBoard = ({ rows, cols, isLocked, onChange }: GameBoardProps) => {
   const [grid, setGrid] = useState(() => createGrid(rows.length, cols.length));
   const [mode, setMode] = useState<PaintMode>('checked');
   const [focused, setFocused] = useState<Position>({ row: 0, col: 0 });
@@ -76,6 +76,7 @@ const GameBoard = ({ rows, cols, onChange }: GameBoardProps) => {
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTableElement>) => {
     if (event.ctrlKey || event.metaKey || event.altKey) return;
+    if (isLocked && !isArrowKey(event.key)) return;
     const { row, col } = focusedRef.current;
 
     if (isArrowKey(event.key)) {
@@ -108,10 +109,11 @@ const GameBoard = ({ rows, cols, onChange }: GameBoardProps) => {
 
   return (
     <div className={cx('GameBoard')}>
-      <ModeToggle mode={mode} onChange={setMode} />
+      <ModeToggle mode={mode} isDisabled={isLocked} onChange={setMode} />
       <table
         className={cx('GameBoard-table')}
         role="grid"
+        aria-readonly={isLocked}
         onContextMenu={(event) => event.preventDefault()}
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
@@ -135,6 +137,7 @@ const GameBoard = ({ rows, cols, onChange }: GameBoardProps) => {
                         (squareRefs.current[rowIdx] ??= [])[colIdx] = element;
                       }}
                       state={grid[rowIdx][colIdx]}
+                      isReadOnly={isLocked}
                       tabIndex={
                         focused.row === rowIdx && focused.col === colIdx
                           ? 0

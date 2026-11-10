@@ -29,7 +29,13 @@ export const Large: Story = {
 
 export const MultipleClues: Story = {
   args: {
-    rows: [[2, 1], [1, 2], [1, 1], [1, 2], [2, 1]],
+    rows: [
+      [2, 1],
+      [1, 2],
+      [1, 1],
+      [1, 2],
+      [2, 1],
+    ],
     cols: [[1, 3], [2, 1], [2], [1, 1], [2, 1]],
   },
 };
@@ -74,5 +80,26 @@ export const Keyboard: Story = {
       ['unknown', 'checked'],
       ['unknown', 'checked'],
     ]);
+  },
+};
+
+export const Locked: Story = {
+  args: {
+    ...Default.args,
+    isLocked: true,
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const squares = canvas.getAllByLabelText('Non renseignée');
+
+    await userEvent.click(squares[0]);
+    await userEvent.keyboard('{ArrowRight} x{Delete}');
+
+    await expect(squares[1]).toHaveFocus();
+    await expect(args.onChange).not.toHaveBeenCalled();
+    await expect(canvas.getAllByLabelText('Non renseignée')).toHaveLength(4);
+    await expect(
+      canvas.getByRole('button', { name: 'Remplir' }),
+    ).toBeDisabled();
   },
 };

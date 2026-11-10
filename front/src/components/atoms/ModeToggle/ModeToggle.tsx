@@ -5,7 +5,7 @@ import styles from './ModeToggle.module.css';
 
 const cx = classnames.bind(styles);
 
-const ModeToggle = ({ mode, onChange }: ModeToggleProps) => (
+const ModeToggle = ({ mode, isDisabled, onChange }: ModeToggleProps) => (
   <div className={cx('ModeToggle')} role="group" aria-label="Mode de saisie">
     {MODES.map(({ value, label }) => (
       <button
@@ -15,6 +15,7 @@ const ModeToggle = ({ mode, onChange }: ModeToggleProps) => (
           'ModeToggle-button--active': mode === value,
         })}
         aria-pressed={mode === value}
+        disabled={isDisabled}
         onClick={() => onChange(value)}
       >
         {label}

@@ -8,6 +8,10 @@
   user-select: none;
 }
 
+.Square--readonly {
+  cursor: default;
+}
+
 .Square--checked {
   background-color: black;
 }

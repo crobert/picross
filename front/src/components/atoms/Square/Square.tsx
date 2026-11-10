@@ -28,6 +28,7 @@ const Square = ({
       className={cx('Square', {
         'Square--checked': state === 'checked',
         'Square--empty': state === 'empty',
+        'Square--readonly': isReadOnly,
       })}
       aria-label={SQUARE_LABELS[state]}
       tabIndex={tabIndex}

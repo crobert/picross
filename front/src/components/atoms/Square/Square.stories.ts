@@ -32,3 +32,11 @@ export const Empty: Story = {
     state: 'empty',
   },
 };
+
+export const ReadOnly: Story = {
+  args: {
+    ...Default.args,
+    state: 'checked',
+    isReadOnly: true,
+  },
+};
