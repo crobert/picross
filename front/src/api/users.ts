@@ -1,8 +1,11 @@
 import { UnknownUserError } from './errors';
 
+export type Role = 'ROLE_ADMIN' | 'ROLE_PLAYER';
+
 export type User = {
   id: number;
   pseudo: string;
+  role: Role;
 };
 
 export const login = async (

@@ -10,6 +10,7 @@ CREATE TABLE puzzles (
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   pseudo varchar(20) NOT NULL,
+  role varchar(20) NOT NULL DEFAULT 'ROLE_PLAYER' CHECK (role IN ('ROLE_ADMIN', 'ROLE_PLAYER')),
   created_at timestamptz NOT NULL DEFAULT now()
 );
 

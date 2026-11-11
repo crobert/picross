@@ -1,6 +1,11 @@
-import type { User } from '../api/users';
+import type { Role, User } from '../api/users';
 
 export const STORAGE_KEY = 'picross.user';
+
+const isRole = (value: unknown): value is Role =>
+  value === 'ROLE_ADMIN' || value === 'ROLE_PLAYER';
+
+export const isAdmin = (user: User): boolean => user.role === 'ROLE_ADMIN';
 
 export const parseStoredUser = (raw: string | null): User | null => {
   if (!raw) return null;
@@ -11,10 +16,12 @@ export const parseStoredUser = (raw: string | null): User | null => {
       value !== null &&
       'id' in value &&
       'pseudo' in value &&
+      'role' in value &&
       typeof value.id === 'number' &&
-      typeof value.pseudo === 'string'
+      typeof value.pseudo === 'string' &&
+      isRole(value.role)
     ) {
-      return { id: value.id, pseudo: value.pseudo };
+      return { id: value.id, pseudo: value.pseudo, role: value.role };
     }
   } catch {
     return null;

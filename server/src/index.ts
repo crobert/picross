@@ -1,9 +1,13 @@
-import express, { type Request, type Response } from 'express';
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from 'express';
 import cors from 'cors';
 import path from 'path';
 import { isGridShaped, isGridValid } from './clues';
 import { query } from './db';
-import { normalizePseudo, type User } from './users';
+import { normalizePseudo, parseUserId, type User } from './users';
 
 type PuzzleClues = {
   rows: number[][];
@@ -28,6 +32,32 @@ class Server {
     // Pick up React index.html file
     this.app.use(express.static(path.join(__dirname, '../../front/dist')));
   }
+
+  requireAdmin = async (req: Request, res: Response, next: NextFunction) => {
+    const userId = parseUserId(req.get('X-User-Id'));
+    if (userId === null) {
+      res.status(400).json({ error: 'Invalid user id' });
+      return;
+    }
+    try {
+      const result = await query<Pick<User, 'role'>>(
+        'SELECT role FROM users WHERE id = $1',
+        [userId],
+      );
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'User not found' });
+        return;
+      }
+      if (result.rows[0].role !== 'ROLE_ADMIN') {
+        res.status(403).json({ error: 'Forbidden' });
+        return;
+      }
+      next();
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    }
+  };
 
   // Bind controllers to routes
   routes() {
@@ -126,7 +156,7 @@ class Server {
       }
       try {
         const created = await query<User>(
-          'INSERT INTO users (pseudo) VALUES ($1) ON CONFLICT ((lower(pseudo))) DO NOTHING RETURNING id, pseudo',
+          'INSERT INTO users (pseudo) VALUES ($1) ON CONFLICT ((lower(pseudo))) DO NOTHING RETURNING id, pseudo, role',
           [pseudo],
         );
         if (created.rows[0]) {
@@ -134,7 +164,7 @@ class Server {
           return;
         }
         const existing = await query<User>(
-          'SELECT id, pseudo FROM users WHERE lower(pseudo) = lower($1)',
+          'SELECT id, pseudo, role FROM users WHERE lower(pseudo) = lower($1)',
           [pseudo],
         );
         if (!existing.rows[0]) {
@@ -173,6 +203,24 @@ class Server {
         }
       },
     );
+
+    this.app.use('/api/admin', this.requireAdmin);
+
+    this.app.get('/api/admin/users', async (_req: Request, res: Response) => {
+      try {
+        const result = await query(
+          `SELECT u.id, u.pseudo, u.role, u.created_at AS "createdAt", count(c.puzzle_id)::int AS "completedCount"
+           FROM users u
+           LEFT JOIN completions c ON c.user_id = u.id
+           GROUP BY u.id
+           ORDER BY lower(u.pseudo)`,
+        );
+        res.json(result.rows);
+      } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+      }
+    });
 
     this.app.use('/api', (_req: Request, res: Response) => {
       res.status(404).json({ error: 'Not found' });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalizePseudo } from './users';
+import { normalizePseudo, parseUserId } from './users';
 
 describe('normalizePseudo', () => {
   it('accepts 3 to 20 letters, digits, underscores and hyphens', () => {
@@ -30,5 +30,28 @@ describe('normalizePseudo', () => {
     expect(normalizePseudo(null)).toBeNull();
     expect(normalizePseudo(12345)).toBeNull();
     expect(normalizePseudo({ pseudo: 'alice' })).toBeNull();
+  });
+});
+
+describe('parseUserId', () => {
+  it('parses a positive integer written in digits', () => {
+    expect(parseUserId('12')).toBe(12);
+    expect(parseUserId('0')).toBe(0);
+  });
+
+  it('rejects anything else', () => {
+    expect(parseUserId('')).toBeNull();
+    expect(parseUserId(' 12')).toBeNull();
+    expect(parseUserId('1.5')).toBeNull();
+    expect(parseUserId('-3')).toBeNull();
+    expect(parseUserId('12abc')).toBeNull();
+    expect(parseUserId('1e3')).toBeNull();
+    expect(parseUserId('9999999999')).toBeNull();
+  });
+
+  it('rejects a value that is not a string', () => {
+    expect(parseUserId(undefined)).toBeNull();
+    expect(parseUserId(12)).toBeNull();
+    expect(parseUserId(['12'])).toBeNull();
   });
 });

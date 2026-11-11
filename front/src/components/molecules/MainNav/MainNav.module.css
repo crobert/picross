@@ -1,0 +1,19 @@
+.MainNav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.MainNav-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.MainNav-link:hover {
+  text-decoration: underline;
+}
+
+.MainNav-link--active {
+  font-weight: bold;
+  text-decoration: underline;
+}

@@ -1,0 +1,14 @@
+.UserTable {
+  border-collapse: collapse;
+}
+
+.UserTable th,
+.UserTable td {
+  padding: 8px 16px;
+  border: 1px solid black;
+  text-align: left;
+}
+
+.UserTable-count {
+  text-align: right;
+}

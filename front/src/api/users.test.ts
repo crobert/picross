@@ -16,7 +16,7 @@ describe('login', () => {
   it('posts the pseudo to the login route', async () => {
     const fetchMock = stubFetch({
       ok: true,
-      json: async () => ({ id: 1, pseudo: 'alice' }),
+      json: async () => ({ id: 1, pseudo: 'alice', role: 'ROLE_PLAYER' }),
     });
 
     await login('alice');
@@ -30,8 +30,9 @@ describe('login', () => {
   });
 
   it('returns the user sent by the server', async () => {
-    stubFetch({ ok: true, json: async () => ({ id: 7, pseudo: 'Alice' }) });
-    await expect(login('alice')).resolves.toEqual({ id: 7, pseudo: 'Alice' });
+    const user = { id: 7, pseudo: 'Alice', role: 'ROLE_ADMIN' };
+    stubFetch({ ok: true, json: async () => user });
+    await expect(login('alice')).resolves.toEqual(user);
   });
 
   it('throws when the server answers with an error status', async () => {

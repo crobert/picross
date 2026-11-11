@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, Navigate, Outlet, useLocation } from 'react-router';
 import classnames from 'classnames/bind';
-import { useAuth } from '../../auth';
+import { isAdmin, useAuth } from '../../auth';
+import MainNav from '../../components/molecules/MainNav';
 import UserBar from '../../components/molecules/UserBar';
 import { ROUTES } from '../../routes';
 import styles from './ProtectedLayout.module.css';
@@ -38,6 +39,7 @@ function ProtectedLayout() {
         <Link className={cx('ProtectedLayout-brand')} to={ROUTES.dashboard}>
           Picross
         </Link>
+        <MainNav isAdmin={isAdmin(user)} />
         <UserBar pseudo={user.pseudo} onLogout={handleLogout} />
       </header>
       <main>

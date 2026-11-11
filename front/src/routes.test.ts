@@ -6,4 +6,8 @@ describe('ROUTES', () => {
     expect(ROUTES.puzzle(3)).toBe('/puzzles/3');
     expect(ROUTES.puzzlePattern.replace(':id', '3')).toBe(ROUTES.puzzle(3));
   });
+
+  it('puts the admin pages under /admin', () => {
+    expect(ROUTES.adminUsers).toBe('/admin/users');
+  });
 });

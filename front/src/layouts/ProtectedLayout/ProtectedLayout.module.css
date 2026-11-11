@@ -18,3 +18,7 @@
   font-weight: bold;
   text-decoration: none;
 }
+
+.ProtectedLayout-header > :last-child {
+  margin-left: auto;
+}
