@@ -1,0 +1,21 @@
+.PuzzleList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.PuzzleList-link {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid black;
+  color: inherit;
+  text-decoration: none;
+}
+
+.PuzzleList-link:hover {
+  background-color: black;
+  color: white;
+}

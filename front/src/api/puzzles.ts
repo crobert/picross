@@ -13,6 +13,20 @@ export const fetchPuzzles = async (signal?: AbortSignal): Promise<Puzzle[]> => {
   return response.json();
 };
 
+export const fetchPuzzle = async (
+  id: string | number,
+  signal?: AbortSignal,
+): Promise<Puzzle | null> => {
+  const response = await fetch(`/api/puzzles/${id}`, { signal });
+  if (response.status === 404 || response.status === 400) return null;
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/puzzles/${id} failed with status ${response.status}`,
+    );
+  }
+  return response.json();
+};
+
 export const validateGrid = async (
   puzzleId: number,
   userId: number,

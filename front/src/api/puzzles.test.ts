@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { validateGrid } from './puzzles';
+import { fetchPuzzle, validateGrid } from './puzzles';
 
 const stubFetch = (response: Partial<Response>) => {
   const fetchMock = vi.fn().mockResolvedValue(response);
@@ -39,5 +39,35 @@ describe('validateGrid', () => {
   it('throws when the server answers with an error status', async () => {
     stubFetch({ ok: false, status: 404 });
     await expect(validateGrid(999, 7, [[1]])).rejects.toThrow('status 404');
+  });
+});
+
+describe('fetchPuzzle', () => {
+  const puzzle = { id: 3, name: 'heart', cols: [[1]], rows: [[1]] };
+
+  it('gets the puzzle by id', async () => {
+    const fetchMock = stubFetch({
+      ok: true,
+      status: 200,
+      json: async () => puzzle,
+    });
+
+    await expect(fetchPuzzle(3)).resolves.toEqual(puzzle);
+    expect(fetchMock).toHaveBeenCalledWith('/api/puzzles/3', {
+      signal: undefined,
+    });
+  });
+
+  it('returns null when the puzzle does not exist or the id is invalid', async () => {
+    stubFetch({ ok: false, status: 404 });
+    await expect(fetchPuzzle(999)).resolves.toBeNull();
+
+    stubFetch({ ok: false, status: 400 });
+    await expect(fetchPuzzle('abc')).resolves.toBeNull();
+  });
+
+  it('throws on any other error status', async () => {
+    stubFetch({ ok: false, status: 500 });
+    await expect(fetchPuzzle(3)).rejects.toThrow('status 500');
   });
 });

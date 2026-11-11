@@ -1,0 +1,20 @@
+.ProtectedLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+}
+
+.ProtectedLayout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ProtectedLayout-brand {
+  color: inherit;
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+}

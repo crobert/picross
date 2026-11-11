@@ -1,4 +1,5 @@
 import type { Decorator } from '@storybook/react-vite';
+import { MemoryRouter } from 'react-router';
 
 export const withTable: Decorator = (Story) => (
   <table>
@@ -8,4 +9,10 @@ export const withTable: Decorator = (Story) => (
       </tr>
     </tbody>
   </table>
+);
+
+export const withRouter: Decorator = (Story) => (
+  <MemoryRouter>
+    <Story />
+  </MemoryRouter>
 );

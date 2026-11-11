@@ -1,11 +1,4 @@
-import type { Puzzle } from './api/puzzles';
-import type { Grid } from './components/organisms/GameBoard/GameBoard.types';
-
-export const formatPuzzleLabel = (
-  { id, name, cols, rows }: Puzzle,
-  isCompleted = false,
-): string =>
-  `${isCompleted ? '✓ ' : ''}#${id} ${name} (${cols.length}×${rows.length})`;
+import type { Grid } from '../GameBoard/GameBoard.types';
 
 export const toBinaryGrid = (grid: Grid): number[][] =>
   grid.map((line) => line.map((state) => (state === 'checked' ? 1 : 0)));

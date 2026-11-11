@@ -5,7 +5,7 @@ import {
   readStoredUser,
   saveUser,
   STORAGE_KEY,
-} from './Session.utils';
+} from './AuthProvider.utils';
 
 const stubStorage = () => {
   const store = new Map<string, string>();

@@ -46,6 +46,28 @@ class Server {
       }
     });
 
+    this.app.get('/api/puzzles/:id', async (req: Request, res: Response) => {
+      const id = Number(req.params.id);
+      if (!Number.isInteger(id)) {
+        res.status(400).json({ error: 'Invalid puzzle id' });
+        return;
+      }
+      try {
+        const result = await query(
+          'SELECT id, name, cols, rows FROM puzzles WHERE id = $1',
+          [id],
+        );
+        if (result.rows.length === 0) {
+          res.status(404).json({ error: 'Puzzle not found' });
+          return;
+        }
+        res.json(result.rows[0]);
+      } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+      }
+    });
+
     this.app.post(
       '/api/puzzles/:id/validate',
       async (req: Request, res: Response) => {

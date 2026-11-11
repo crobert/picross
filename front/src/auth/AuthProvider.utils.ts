@@ -1,4 +1,4 @@
-import type { User } from './api/users';
+import type { User } from '../api/users';
 
 export const STORAGE_KEY = 'picross.user';
 
