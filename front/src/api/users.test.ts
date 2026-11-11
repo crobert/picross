@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { login } from './users';
+import { fetchCompletions, login } from './users';
 
 const stubFetch = (response: Partial<Response>) => {
   const fetchMock = vi.fn().mockResolvedValue(response);
@@ -36,5 +36,24 @@ describe('login', () => {
   it('throws when the server answers with an error status', async () => {
     stubFetch({ ok: false, status: 400 });
     await expect(login('a')).rejects.toThrow('status 400');
+  });
+});
+
+describe('fetchCompletions', () => {
+  it('gets the completions of the user', async () => {
+    const completions = [
+      { puzzleId: 3, completedAt: '2026-11-10T21:12:16.700Z' },
+    ];
+    const fetchMock = stubFetch({ ok: true, json: async () => completions });
+
+    await expect(fetchCompletions(12)).resolves.toEqual(completions);
+    expect(fetchMock).toHaveBeenCalledWith('/api/users/12/completions', {
+      signal: undefined,
+    });
+  });
+
+  it('throws when the server answers with an error status', async () => {
+    stubFetch({ ok: false, status: 404 });
+    await expect(fetchCompletions(999)).rejects.toThrow('status 404');
   });
 });

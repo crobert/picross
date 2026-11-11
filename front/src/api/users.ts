@@ -20,3 +20,21 @@ export const login = async (
   }
   return response.json();
 };
+
+export type Completion = {
+  puzzleId: number;
+  completedAt: string;
+};
+
+export const fetchCompletions = async (
+  userId: number,
+  signal?: AbortSignal,
+): Promise<Completion[]> => {
+  const response = await fetch(`/api/users/${userId}/completions`, { signal });
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/users/${userId}/completions failed with status ${response.status}`,
+    );
+  }
+  return response.json();
+};

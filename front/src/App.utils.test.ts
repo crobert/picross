@@ -25,6 +25,19 @@ describe('formatPuzzleLabel', () => {
   });
 });
 
+describe('formatPuzzleLabel with completion', () => {
+  const puzzle = { id: 3, name: 'heart', cols: [[1]], rows: [[1]] };
+
+  it('prefixes a completed puzzle with a check mark', () => {
+    expect(formatPuzzleLabel(puzzle, true)).toBe('✓ #3 heart (1×1)');
+  });
+
+  it('adds nothing for a puzzle that is not completed', () => {
+    expect(formatPuzzleLabel(puzzle, false)).toBe('#3 heart (1×1)');
+    expect(formatPuzzleLabel(puzzle)).toBe('#3 heart (1×1)');
+  });
+});
+
 describe('toBinaryGrid', () => {
   it('sends checked squares as 1 and every other state as 0', () => {
     expect(

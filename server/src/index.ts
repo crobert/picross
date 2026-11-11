@@ -126,6 +126,32 @@ class Server {
       }
     });
 
+    this.app.get(
+      '/api/users/:id/completions',
+      async (req: Request, res: Response) => {
+        const id = Number(req.params.id);
+        if (!Number.isInteger(id)) {
+          res.status(400).json({ error: 'Invalid user id' });
+          return;
+        }
+        try {
+          const users = await query('SELECT 1 FROM users WHERE id = $1', [id]);
+          if (users.rows.length === 0) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+          }
+          const result = await query(
+            'SELECT puzzle_id AS "puzzleId", completed_at AS "completedAt" FROM completions WHERE user_id = $1 ORDER BY puzzle_id',
+            [id],
+          );
+          res.json(result.rows);
+        } catch (err) {
+          console.error(err);
+          res.status(500).send('Internal Server Error');
+        }
+      },
+    );
+
     // Catch all requests that don't match any route
     this.app.get('/{*splat}', (_req: Request, res: Response) => {
       res.sendFile(path.join(__dirname, '../../front/dist/index.html'));

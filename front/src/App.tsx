@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames/bind';
 import { fetchPuzzles, validateGrid, type Puzzle } from './api/puzzles';
+import { fetchCompletions } from './api/users';
 import {
   formatPuzzleLabel,
   RESULT_MESSAGES,
@@ -22,6 +23,7 @@ function App() {
   const [failed, setFailed] = useState(false);
   const [grid, setGrid] = useState<Grid | null>(null);
   const [result, setResult] = useState<ValidationResult | null>(null);
+  const [completedIds, setCompletedIds] = useState<number[]>([]);
   const [attempt, setAttempt] = useState(0);
   const validationRef = useRef<AbortController | null>(null);
 
@@ -36,6 +38,16 @@ function App() {
       });
     return () => controller.abort();
   }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchCompletions(user.id, controller.signal)
+      .then((completions) =>
+        setCompletedIds(completions.map(({ puzzleId }) => puzzleId)),
+      )
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [user.id]);
 
   const puzzle = puzzles?.find(({ id }) => id === selectedId) ?? puzzles?.[0];
 
@@ -75,6 +87,11 @@ function App() {
         controller.signal,
       );
       setResult(valid ? 'valid' : 'invalid');
+      if (valid) {
+        setCompletedIds((ids) =>
+          ids.includes(puzzle.id) ? ids : [...ids, puzzle.id],
+        );
+      }
     } catch (error: unknown) {
       if (!(error instanceof DOMException && error.name === 'AbortError')) {
         setResult('error');
@@ -98,7 +115,7 @@ function App() {
             >
               {puzzles.map((item) => (
                 <option key={item.id} value={item.id}>
-                  {formatPuzzleLabel(item)}
+                  {formatPuzzleLabel(item, completedIds.includes(item.id))}
                 </option>
               ))}
             </select>
