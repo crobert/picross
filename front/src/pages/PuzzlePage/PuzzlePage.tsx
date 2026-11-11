@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router';
 import classnames from 'classnames/bind';
-import { useUser } from '../../auth';
+import { useAuth, useUser } from '../../auth';
 import PuzzleGame from '../../components/organisms/PuzzleGame';
 import { usePuzzle } from '../../hooks/usePuzzle';
 import { ROUTES } from '../../routes';
@@ -10,6 +10,7 @@ const cx = classnames.bind(styles);
 
 function PuzzleView({ id }: { id: string }) {
   const user = useUser();
+  const { logout } = useAuth();
   const state = usePuzzle(id);
 
   return (
@@ -21,7 +22,11 @@ function PuzzleView({ id }: { id: string }) {
       {state.status === 'ready' && (
         <>
           <h1>{state.puzzle.name}</h1>
-          <PuzzleGame puzzle={state.puzzle} userId={user.id} />
+          <PuzzleGame
+            puzzle={state.puzzle}
+            userId={user.id}
+            onUnknownUser={logout}
+          />
         </>
       )}
     </section>

@@ -1,3 +1,5 @@
+import { UnknownUserError } from './errors';
+
 export type Puzzle = {
   id: number;
   name: string;
@@ -39,6 +41,10 @@ export const validateGrid = async (
     body: JSON.stringify({ userId, grid }),
     signal,
   });
+  if (response.status === 404) {
+    const body = await response.json().catch(() => null);
+    if (body?.error === 'User not found') throw new UnknownUserError();
+  }
   if (!response.ok) {
     throw new Error(
       `POST /api/puzzles/${puzzleId}/validate failed with status ${response.status}`,

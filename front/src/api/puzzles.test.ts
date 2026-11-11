@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { UnknownUserError } from './errors';
 import { fetchPuzzle, validateGrid } from './puzzles';
 
 const stubFetch = (response: Partial<Response>) => {
@@ -36,9 +37,31 @@ describe('validateGrid', () => {
     await expect(validateGrid(3, 7, [[1]])).resolves.toBe(false);
   });
 
+  it('throws an UnknownUserError when the user does not exist', async () => {
+    stubFetch({
+      ok: false,
+      status: 404,
+      json: async () => ({ error: 'User not found' }),
+    });
+    await expect(validateGrid(3, 999, [[1]])).rejects.toBeInstanceOf(
+      UnknownUserError,
+    );
+  });
+
+  it('throws a plain error when the puzzle does not exist', async () => {
+    stubFetch({
+      ok: false,
+      status: 404,
+      json: async () => ({ error: 'Puzzle not found' }),
+    });
+    const request = validateGrid(999, 7, [[1]]);
+    await expect(request).rejects.toThrow('status 404');
+    await expect(request).rejects.not.toBeInstanceOf(UnknownUserError);
+  });
+
   it('throws when the server answers with an error status', async () => {
-    stubFetch({ ok: false, status: 404 });
-    await expect(validateGrid(999, 7, [[1]])).rejects.toThrow('status 404');
+    stubFetch({ ok: false, status: 400 });
+    await expect(validateGrid(3, 7, [[1]])).rejects.toThrow('status 400');
   });
 });
 

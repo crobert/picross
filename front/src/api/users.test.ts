@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { UnknownUserError } from './errors';
 import { fetchCompletions, login } from './users';
 
 const stubFetch = (response: Partial<Response>) => {
@@ -52,8 +53,15 @@ describe('fetchCompletions', () => {
     });
   });
 
-  it('throws when the server answers with an error status', async () => {
+  it('throws an UnknownUserError when the user does not exist', async () => {
     stubFetch({ ok: false, status: 404 });
-    await expect(fetchCompletions(999)).rejects.toThrow('status 404');
+    await expect(fetchCompletions(999)).rejects.toBeInstanceOf(
+      UnknownUserError,
+    );
+  });
+
+  it('throws when the server answers with another error status', async () => {
+    stubFetch({ ok: false, status: 500 });
+    await expect(fetchCompletions(1)).rejects.toThrow('status 500');
   });
 });

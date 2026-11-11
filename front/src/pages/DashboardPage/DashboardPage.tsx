@@ -1,5 +1,5 @@
 import classnames from 'classnames/bind';
-import { useUser } from '../../auth';
+import { useAuth, useUser } from '../../auth';
 import PuzzleList from '../../components/molecules/PuzzleList';
 import { useCompletions } from '../../hooks/useCompletions';
 import { usePuzzles } from '../../hooks/usePuzzles';
@@ -9,8 +9,9 @@ const cx = classnames.bind(styles);
 
 function DashboardPage() {
   const user = useUser();
+  const { logout } = useAuth();
   const { puzzles, failed } = usePuzzles();
-  const completedIds = useCompletions(user.id);
+  const completedIds = useCompletions(user.id, logout);
 
   return (
     <section className={cx('DashboardPage')}>

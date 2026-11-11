@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
+import { UnknownUserError } from '../api/errors';
 import { fetchCompletions } from '../api/users';
 
-export const useCompletions = (userId: number): number[] => {
+export const useCompletions = (
+  userId: number,
+  onUnknownUser: () => void,
+): number[] => {
   const [completedIds, setCompletedIds] = useState<number[]>([]);
 
   useEffect(() => {
@@ -10,9 +14,11 @@ export const useCompletions = (userId: number): number[] => {
       .then((completions) =>
         setCompletedIds(completions.map(({ puzzleId }) => puzzleId)),
       )
-      .catch(() => undefined);
+      .catch((error: unknown) => {
+        if (error instanceof UnknownUserError) onUnknownUser();
+      });
     return () => controller.abort();
-  }, [userId]);
+  }, [userId, onUnknownUser]);
 
   return completedIds;
 };

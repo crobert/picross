@@ -174,6 +174,10 @@ class Server {
       },
     );
 
+    this.app.use('/api', (_req: Request, res: Response) => {
+      res.status(404).json({ error: 'Not found' });
+    });
+
     // Catch all requests that don't match any route
     this.app.get('/{*splat}', (_req: Request, res: Response) => {
       res.sendFile(path.join(__dirname, '../../front/dist/index.html'));

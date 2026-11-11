@@ -1,4 +1,5 @@
-import { Link, Navigate, Outlet } from 'react-router';
+import { useState } from 'react';
+import { Link, Navigate, Outlet, useLocation } from 'react-router';
 import classnames from 'classnames/bind';
 import { useAuth } from '../../auth';
 import UserBar from '../../components/molecules/UserBar';
@@ -9,8 +10,27 @@ const cx = classnames.bind(styles);
 
 function ProtectedLayout() {
   const { user, logout } = useAuth();
+  const location = useLocation();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  if (!user) return <Navigate to={ROUTES.home} replace />;
+  if (!user) {
+    return (
+      <Navigate
+        to={ROUTES.home}
+        replace
+        state={
+          isLoggingOut
+            ? undefined
+            : { from: `${location.pathname}${location.search}` }
+        }
+      />
+    );
+  }
+
+  const handleLogout = () => {
+    setIsLoggingOut(true);
+    logout();
+  };
 
   return (
     <div className={cx('ProtectedLayout')}>
@@ -18,7 +38,7 @@ function ProtectedLayout() {
         <Link className={cx('ProtectedLayout-brand')} to={ROUTES.dashboard}>
           Picross
         </Link>
-        <UserBar pseudo={user.pseudo} onLogout={logout} />
+        <UserBar pseudo={user.pseudo} onLogout={handleLogout} />
       </header>
       <main>
         <Outlet />

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
 import PuzzleGame from './index';
 
 const meta = {
@@ -18,5 +19,6 @@ export const Default: Story = {
       rows: [[1, 1], [5], [5], [3], [1]],
     },
     userId: 1,
+    onUnknownUser: fn(),
   },
 };

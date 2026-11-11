@@ -1,3 +1,5 @@
+import { UnknownUserError } from './errors';
+
 export type User = {
   id: number;
   pseudo: string;
@@ -31,6 +33,7 @@ export const fetchCompletions = async (
   signal?: AbortSignal,
 ): Promise<Completion[]> => {
   const response = await fetch(`/api/users/${userId}/completions`, { signal });
+  if (response.status === 404) throw new UnknownUserError();
   if (!response.ok) {
     throw new Error(
       `GET /api/users/${userId}/completions failed with status ${response.status}`,

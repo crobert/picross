@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import classnames from 'classnames/bind';
+import { UnknownUserError } from '../../../api/errors';
 import { validateGrid } from '../../../api/puzzles';
 import GameBoard from '../GameBoard';
 import type { Grid } from '../GameBoard/GameBoard.types';
@@ -14,7 +15,7 @@ import styles from './PuzzleGame.module.css';
 
 const cx = classnames.bind(styles);
 
-const PuzzleGame = ({ puzzle, userId }: PuzzleGameProps) => {
+const PuzzleGame = ({ puzzle, userId, onUnknownUser }: PuzzleGameProps) => {
   const [grid, setGrid] = useState<Grid | null>(null);
   const [result, setResult] = useState<ValidationResult | null>(null);
   const [attempt, setAttempt] = useState(0);
@@ -50,7 +51,11 @@ const PuzzleGame = ({ puzzle, userId }: PuzzleGameProps) => {
       );
       setResult(valid ? 'valid' : 'invalid');
     } catch (error: unknown) {
-      if (!(error instanceof DOMException && error.name === 'AbortError')) {
+      if (error instanceof UnknownUserError) {
+        onUnknownUser();
+      } else if (!(
+        error instanceof DOMException && error.name === 'AbortError'
+      )) {
         setResult('error');
       }
     }

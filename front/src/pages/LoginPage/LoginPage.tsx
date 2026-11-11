@@ -1,19 +1,20 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import classnames from 'classnames/bind';
 import { useAuth } from '../../auth';
 import LoginForm from '../../components/molecules/LoginForm';
-import { ROUTES } from '../../routes';
+import { getRedirectTarget } from './LoginPage.utils';
 import styles from './LoginPage.module.css';
 
 const cx = classnames.bind(styles);
 
 function LoginPage() {
   const { user, login } = useAuth();
+  const location = useLocation();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (user) return <Navigate to={ROUTES.dashboard} replace />;
+  if (user) return <Navigate to={getRedirectTarget(location.state)} replace />;
 
   const handleSubmit = async (pseudo: string) => {
     setIsSubmitting(true);
