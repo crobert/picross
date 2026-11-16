@@ -4,18 +4,36 @@
 
 .ModeToggle-button {
   padding: 8px 16px;
-  border: 1px solid black;
-  background-color: white;
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-surface);
+  color: var(--color-primary);
   cursor: pointer;
+}
+
+.ModeToggle-button:first-child {
+  border-radius: var(--radius-small) 0 0 var(--radius-small);
+}
+
+.ModeToggle-button:last-child {
+  border-radius: 0 var(--radius-small) var(--radius-small) 0;
 }
 
 .ModeToggle-button + .ModeToggle-button {
   border-left: 0;
 }
 
+.ModeToggle-button:hover:not(:disabled, .ModeToggle-button--active) {
+  background-color: var(--color-background);
+}
+
+.ModeToggle-button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -4px;
+}
+
 .ModeToggle-button--active {
-  background-color: black;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
 }
 
 .ModeToggle-button:disabled {

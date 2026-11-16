@@ -1,5 +1,6 @@
 import classnames from 'classnames/bind';
 import { useAuth, useUser } from '../../auth';
+import Alert from '../../components/atoms/Alert';
 import UserTable from '../../components/molecules/UserTable';
 import { useAdminUsers } from '../../hooks/useAdminUsers';
 import styles from './AdminUsersPage.module.css';
@@ -14,8 +15,12 @@ function AdminUsersPage() {
   return (
     <section className={cx('AdminUsersPage')}>
       <h1>Utilisateurs</h1>
-      {failed && <p>Impossible de charger les utilisateurs.</p>}
-      {!failed && !users && <p>Chargement…</p>}
+      {failed && (
+        <Alert role="alert">Impossible de charger les utilisateurs.</Alert>
+      )}
+      {!failed && !users && (
+        <p className={cx('AdminUsersPage-status')}>Chargement…</p>
+      )}
       {users && <UserTable users={users} />}
     </section>
   );

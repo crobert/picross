@@ -1,4 +1,5 @@
 import classnames from 'classnames/bind';
+import Button from '../../atoms/Button';
 import type { UserBarProps } from './UserBar.types';
 import styles from './UserBar.module.css';
 
@@ -9,9 +10,9 @@ const UserBar = ({ pseudo, onLogout }: UserBarProps) => (
     <span>
       Connecté : <strong>{pseudo}</strong>
     </span>
-    <button type="button" className={cx('UserBar-logout')} onClick={onLogout}>
+    <Button variant="outline" size="small" onClick={onLogout}>
       Se déconnecter
-    </button>
+    </Button>
   </div>
 );
 

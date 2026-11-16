@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router';
 import classnames from 'classnames/bind';
 import { useAuth, useUser } from '../../auth';
+import Alert from '../../components/atoms/Alert';
 import PuzzleGame from '../../components/organisms/PuzzleGame';
 import { usePuzzle } from '../../hooks/usePuzzle';
 import { ROUTES } from '../../routes';
@@ -15,10 +16,18 @@ function PuzzleView({ id }: { id: string }) {
 
   return (
     <section className={cx('PuzzlePage')}>
-      <Link to={ROUTES.dashboard}>← Tableau de bord</Link>
-      {state.status === 'loading' && <p>Chargement…</p>}
-      {state.status === 'failed' && <p>Impossible de charger le puzzle.</p>}
-      {state.status === 'notFound' && <p>Puzzle introuvable.</p>}
+      <Link className={cx('PuzzlePage-back')} to={ROUTES.dashboard}>
+        ← Tableau de bord
+      </Link>
+      {state.status === 'loading' && (
+        <p className={cx('PuzzlePage-status')}>Chargement…</p>
+      )}
+      {state.status === 'failed' && (
+        <Alert role="alert">Impossible de charger le puzzle.</Alert>
+      )}
+      {state.status === 'notFound' && (
+        <Alert role="alert">Puzzle introuvable.</Alert>
+      )}
       {state.status === 'ready' && (
         <>
           <h1>{state.puzzle.name}</h1>

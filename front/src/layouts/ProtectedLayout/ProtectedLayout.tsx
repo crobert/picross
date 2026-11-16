@@ -42,7 +42,7 @@ function ProtectedLayout() {
         <MainNav isAdmin={isAdmin(user)} />
         <UserBar pseudo={user.pseudo} onLogout={handleLogout} />
       </header>
-      <main>
+      <main className={cx('ProtectedLayout-content')}>
         <Outlet />
       </main>
     </div>

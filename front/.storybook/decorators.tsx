@@ -11,6 +11,12 @@ export const withTable: Decorator = (Story) => (
   </table>
 );
 
+export const withDarkBackground: Decorator = (Story) => (
+  <div style={{ padding: 16, backgroundColor: 'var(--color-primary)', color: 'var(--color-on-primary)' }}>
+    <Story />
+  </div>
+);
+
 export const withRouter: Decorator = (Story) => (
   <MemoryRouter>
     <Story />

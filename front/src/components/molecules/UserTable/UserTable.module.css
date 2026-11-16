@@ -1,12 +1,30 @@
 .UserTable {
-  border-collapse: collapse;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
 }
 
 .UserTable th,
 .UserTable td {
-  padding: 8px 16px;
-  border: 1px solid black;
+  padding: 12px 16px;
   text-align: left;
+}
+
+.UserTable th {
+  background-color: var(--color-background);
+  font-weight: 600;
+}
+
+.UserTable td {
+  border-top: 1px solid var(--color-border);
+}
+
+.UserTable tbody tr:hover td {
+  background-color: var(--color-background);
 }
 
 .UserTable-count {

@@ -1,21 +1,30 @@
 .PuzzleList {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  width: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .PuzzleList-link {
-  display: inline-block;
-  padding: 8px 16px;
-  border: 1px solid black;
+  display: block;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-card);
   color: inherit;
+  font-weight: 500;
   text-decoration: none;
 }
 
 .PuzzleList-link:hover {
-  background-color: black;
-  color: white;
+  border-color: var(--color-primary);
+}
+
+.PuzzleList-link:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }

@@ -1,5 +1,6 @@
 import classnames from 'classnames/bind';
 import { useAuth, useUser } from '../../auth';
+import Alert from '../../components/atoms/Alert';
 import PuzzleList from '../../components/molecules/PuzzleList';
 import { useCompletions } from '../../hooks/useCompletions';
 import { usePuzzles } from '../../hooks/usePuzzles';
@@ -16,9 +17,13 @@ function DashboardPage() {
   return (
     <section className={cx('DashboardPage')}>
       <h1>Tableau de bord</h1>
-      {failed && <p>Impossible de charger les puzzles.</p>}
-      {!failed && !puzzles && <p>Chargement…</p>}
-      {puzzles && puzzles.length === 0 && <p>Aucun puzzle.</p>}
+      {failed && <Alert role="alert">Impossible de charger les puzzles.</Alert>}
+      {!failed && !puzzles && (
+        <p className={cx('DashboardPage-status')}>Chargement…</p>
+      )}
+      {puzzles && puzzles.length === 0 && (
+        <p className={cx('DashboardPage-status')}>Aucun puzzle.</p>
+      )}
       {puzzles && puzzles.length > 0 && (
         <PuzzleList puzzles={puzzles} completedIds={completedIds} />
       )}

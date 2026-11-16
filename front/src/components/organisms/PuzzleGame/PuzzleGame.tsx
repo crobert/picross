@@ -2,6 +2,8 @@ import { useRef, useState } from 'react';
 import classnames from 'classnames/bind';
 import { UnknownUserError } from '../../../api/errors';
 import { validateGrid } from '../../../api/puzzles';
+import Alert from '../../atoms/Alert';
+import Button from '../../atoms/Button';
 import GameBoard from '../GameBoard';
 import type { Grid } from '../GameBoard/GameBoard.types';
 import { createGrid } from '../GameBoard/GameBoard.utils';
@@ -70,27 +72,20 @@ const PuzzleGame = ({ puzzle, userId, onUnknownUser }: PuzzleGameProps) => {
         isLocked={result === 'valid'}
         onChange={handleChange}
       />
-      <button
-        type="button"
-        className={cx('PuzzleGame-button')}
-        disabled={result === 'valid'}
-        onClick={handleValidate}
-      >
+      <Button isDisabled={result === 'valid'} onClick={handleValidate}>
         Vérifier
-      </button>
-      <div
-        role="status"
-        className={cx({ 'PuzzleGame-victory': result === 'valid' })}
-      >
-        {result && <p>{RESULT_MESSAGES[result]}</p>}
+      </Button>
+      <div role="status">
         {result === 'valid' && (
-          <button
-            type="button"
-            className={cx('PuzzleGame-button', 'PuzzleGame-button--inverted')}
-            onClick={handleReplay}
-          >
-            Rejouer
-          </button>
+          <Alert variant="success">
+            {RESULT_MESSAGES.valid}
+            <Button variant="outline" onClick={handleReplay}>
+              Rejouer
+            </Button>
+          </Alert>
+        )}
+        {result && result !== 'valid' && (
+          <Alert>{RESULT_MESSAGES[result]}</Alert>
         )}
       </div>
     </div>

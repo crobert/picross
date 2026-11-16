@@ -7,4 +7,11 @@
 
 .AdminUsersPage h1 {
   margin: 0;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.AdminUsersPage-status {
+  margin: 0;
+  color: var(--color-muted);
 }

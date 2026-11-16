@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import classnames from 'classnames/bind';
+import Alert from '../../atoms/Alert';
+import Button from '../../atoms/Button';
 import type { LoginFormProps } from './LoginForm.types';
 import { isValidPseudo, PSEUDO_RULE } from './LoginForm.utils';
 import styles from './LoginForm.module.css';
@@ -37,14 +39,10 @@ const LoginForm = ({ isSubmitting, error, onSubmit }: LoginFormProps) => {
           onChange={(event) => setPseudo(event.target.value)}
         />
       </label>
-      <button
-        className={cx('LoginForm-submit')}
-        type="submit"
-        disabled={isSubmitting}
-      >
+      <Button type="submit" isFullWidth isDisabled={isSubmitting}>
         Entrer
-      </button>
-      {message && <p role="alert">{message}</p>}
+      </Button>
+      {message && <Alert role="alert">{message}</Alert>}
     </form>
   );
 };

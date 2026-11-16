@@ -29,12 +29,14 @@ function LoginPage() {
 
   return (
     <main className={cx('LoginPage')}>
-      <h1>Picross</h1>
-      <LoginForm
-        isSubmitting={isSubmitting}
-        error={error}
-        onSubmit={handleSubmit}
-      />
+      <div className={cx('LoginPage-card')}>
+        <h1 className={cx('LoginPage-title')}>Picross</h1>
+        <LoginForm
+          isSubmitting={isSubmitting}
+          error={error}
+          onSubmit={handleSubmit}
+        />
+      </div>
     </main>
   );
 }
